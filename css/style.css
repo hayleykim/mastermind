@@ -1,0 +1,147 @@
+body {
+    background-color: #f9f8fd;
+}
+
+.container {
+    height: 80vmin;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid gray; */
+}
+
+
+
+header {
+    color: #5cbdb9;
+    font-size: 5vmin;
+    padding: 1vmin;
+}
+
+#message {
+    font-size: 4vmin;
+    color: #8cbcd0;
+    padding: 1vmin;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(10, 1fr);
+    /* border: 1px solid limegreen; */
+}
+
+.boardRow {
+    display: flex;
+    justify-content: space-between;
+    /* border: 1px solid blue; */
+    margin: 0.5vmin 0;
+}
+
+.mainCell {
+    display: flex;
+    justify-content: justify-between;
+    /* border: 1px solid red; */
+    margin-right: 1vmin;
+}
+
+.mainCell > div {
+    height: 3vmin;
+    width: 3vmin;
+    margin: 0.5vmin 1vmin;
+    border: 2px solid gray;
+    border-radius: 50%;
+}
+
+/* .mainCell > div:hover {
+    background-color: gray;
+    opacity: 0.2;
+} */
+
+
+.sideCell {
+    display: flex;
+    justify-content: justify-between;
+    align-items: center;
+    /* border: 1px solid blue; */
+}
+
+.sideCell > div {
+    height: 1vmin;
+    width: 1vmin;
+    margin: 0.3vmin;
+    border: 2px solid gray;
+    border-radius: 50%;
+}
+
+
+
+#sideCell10 > div {
+    display: none;
+}
+
+.cellHover:hover{
+    background:gray;
+    opacity: 0.2;
+}
+
+#colorBox {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    width: 10vmin;
+    border: 1px solid gray;
+    border-radius: 12px;
+}
+
+#colorBox > div {
+    height: 2vmin;
+    width: 2vmin;
+    margin: 0.5vmin 0.2vmin;
+    border: 1px solid gray;
+    border-radius: 50%;
+}
+
+/* #colorBox > div:nth-child(1){
+    background-color: red;
+} */
+
+/* Footer buttons */
+
+#buttonContainer {
+    margin-top: 2vmin;
+}
+
+#buttonContainer > button {
+    border-radius: 12px;
+    border: 1px solid gray;
+    background-color: white;
+    font-size: 2.5vmin;
+    color: gray;
+    padding: 0.5vmin 1.5vmin;
+    margin: 0 1.5vmin;
+}
+
+#buttonContainer > button:hover {
+    background-color: #8cbcd0;
+    color: white;
+}
+
+.checkButton:hover {
+    background-color: #8cbcd0;
+    color: white;
+}
+
+/* Check button */
+
+.checkButton {
+    border-radius: 12px;
+    border: 1px solid gray;
+    background-color: white;
+    font-size: 2vmin;
+    color: gray;
+    padding: 0.2vmin 1.2vmin;
+}
