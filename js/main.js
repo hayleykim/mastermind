@@ -110,23 +110,82 @@ function mastermindBoard () {
     activeSideCellPosition().appendChild(checkBtn);
 
     init();
-
 }
 
+
+function pickMarble() {
+    disableCheckButton();
+    // console.log(state.activeRow);
+    // console.log(`#cell${state.activeRow} > div`);
+
+    if(state.activeRow === 10) {
+        
+    }
+
+    for(let i = 0; i <= 5; i++){
+        const colorBoxItem = document.querySelector(`#colorBox > div:nth-child(${i + 1})`);
+        colorBoxItem.style.backgroundColor = MARBLE_COLORS[i];
+        colorBoxItem.style.position = 'relative';
+    }
+    
+    activeCurrentCircles().forEach(function(cellValue) {
+        colorBoxShow(cellValue);
+    });
+ 
+}
+
+function colorBoxShow(cellValue) {
+    cellValue.classList.add('cellHover');
+
+        
+    cellValue.addEventListener('click', function() {
+        console.log(state.activeRow);
+        console.log(cellValue.parentElement.id);
+
+
+        if(parseInt(cellValue.parentElement.id.replace('cell', '')) === state.activeRow) {
+            cellValue.appendChild(elements.colorBox);
+        
+            if(elements.colorBox.style.display === 'grid'){
+                elements.colorBox.style.display =  'none';
+                console.log('Should be none: ', elements.colorBox.style.display);
+                
+            } else {
+                elements.colorBox.style.display =  'grid';
+                elements.selectedCell = this;
+                console.log('Should be grid: ', elements.colorBox.style.display);
+            }
+        }
+    });
+
+    const colorBoxDiv = document.querySelectorAll('#colorBox > div');
+
+    colorBoxDiv.forEach(function(cellval, index){
+        cellval.addEventListener('click', function() {
+            elements.selectedCell.style.backgroundColor = `${MARBLE_COLORS[index]}`; // 0 - 5
+            checkIfAllActiveRowColored();
+        });
+    }); 
+}
+
+function resetGame() {
+    state.activeRow = 10;
+    elements.message.innerText = '';
+    elements.selectedCell = null;
+    emptyColoredCircles();
+    hideSideCircles()
+    activeSideCellPosition().appendChild(checkBtn);
+    allSideCellExceptBottom();
+    console.log('elements.colorBox:', elements.colorBox);
+    elements.colorBox.style.display = 'none';
+
+    init();
+}
 
 
 
 function messageRender() {
 
-}
-
-function resetGame() {
-    state.activeRow = 10;
-    hideSideCircles()
-    emptyColoredCircles();
-    activeSideCellPosition().appendChild(checkBtn);
-    allSideCellExceptBottom();
-    init();
 }
 
 function showRules() {
@@ -145,16 +204,21 @@ function allSideCellExceptBottom() {
 
 function emptyColoredCircles() {
     allMainCircleDivs().forEach(function(div){
-        div.style.backgroundColor = 'transparent';
+        div.style.backgroundColor = '';
+        div.classList.remove('cellHover');
     });
+}
+
+function colorBox() {
+    const colorBox = document.getElementById('colorBox');
+    return colorBox;
+
 }
 
 function allMainCircleDivs() {
     const MainCircleDivs = document.querySelectorAll('.mainCell > div');
     return MainCircleDivs;
 }
-
-
 
 function hideSideCircles() {
     const activeSideCircles = document.querySelectorAll(`#sideCell${state.activeRow} > div`);
@@ -178,58 +242,7 @@ function activeSideCellPosition() {
 
 
 
-function pickMarble() {
-    //Only active row circles can be hovered and clicked
-    //const currentRow = document.getElementById(`cell${state.activeRow}`);
-    disableCheckButton();
 
-    if(state.activeRow === 10) {
-        elements.message.innerText = '';
-        
-    }
-
-    for(let i = 0; i <= 5; i++){
-        const colorBoxItem = document.querySelector(`#colorBox > div:nth-child(${i + 1})`);
-        colorBoxItem.style.backgroundColor = MARBLE_COLORS[i];
-        colorBoxItem.style.position = 'relative';
-    }
-    
-
-
-    activeCurrentCircles().forEach(function(cellValue) {
-
-        cellValue.classList.add('cellHover');
-
-        
-        cellValue.addEventListener('click', function() {
-
-            if(parseInt(cellValue.parentElement.id.replace('cell', '')) === state.activeRow) {
-                cellValue.appendChild(elements.colorBox);
-            
-                if(elements.colorBox.style.display === 'none' || elements.colorBox.style.display === ''){
-                    elements.colorBox.style.display =  'grid';
-                    elements.selectedCell = this;
-                } else {
-                    elements.colorBox.style.display =  'none';
-                }
-
-                
-            }
-        });
-
-        const colorBoxDiv = document.querySelectorAll('#colorBox > div');
-
-        colorBoxDiv.forEach(function(cellval, index){
-            cellval.addEventListener('click', function() {
-                elements.selectedCell.style.backgroundColor = `${MARBLE_COLORS[index]}`; // 0 - 5
-                checkIfAllActiveRowColored();
-            });
-        }); 
-
-        
-    });
- 
-}
 
 /*----------------- CHECK BUTTON RELATED-----------------*/
 
@@ -263,7 +276,6 @@ function checkButton() {
         state.activeRow = -1;
         disableCheckButton();
         console.log(activeCurrentCircles());
-        console.log(state.activeRow);
         showResults();
     }
     render();
