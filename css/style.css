@@ -48,11 +48,16 @@ header {
 }
 
 .mainCell > div {
+    position: relative;
     height: 3vmin;
     width: 3vmin;
     margin: 0.5vmin 1vmin;
     border: 2px solid gray;
     border-radius: 50%;
+}
+
+.colorFilled {
+    
 }
 
 /* .mainCell > div:hover {
@@ -78,23 +83,32 @@ header {
 
 
 
-#sideCell10 > div {
+.cellDisplayNone {
     display: none;
 }
 
+.cellDisplay {
+    display: flex;
+}
+
 .cellHover:hover{
-    background:gray;
-    opacity: 0.2;
+    background-color:gray;
 }
 
 #colorBox {
-    display: grid;
+    display: none;
+    position: absolute;
+    left: -3.5vmin;
+    bottom: -7.5vmin;
+    /* width: 100%; */
     justify-items: center;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
     width: 10vmin;
     border: 1px solid gray;
     border-radius: 12px;
+    background-color: white;
+    z-index: 1;
 }
 
 #colorBox > div {
@@ -130,10 +144,7 @@ header {
     color: white;
 }
 
-.checkButton:hover {
-    background-color: #8cbcd0;
-    color: white;
-}
+
 
 /* Check button */
 
@@ -145,3 +156,13 @@ header {
     color: gray;
     padding: 0.2vmin 1.2vmin;
 }
+
+.checkButton:hover {
+    background-color: #8cbcd0;
+    color: white;
+}
+
+.disabledButton {
+    pointer-events: none;
+    opacity: 0.2;
+  }

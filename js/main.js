@@ -1,11 +1,13 @@
 /*--------------------------------------------------------- constants ---------------------------------------------------------*/
 const MARBLE_COLORS = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
+const checkBtn = document.createElement('button');
 
 
 /*--------------------------------------------------------- state variables ---------------------------------------------------------*/
 const state = {
     winner: false, //true or false
     activeRow: 10, //starting from bottom boardRow 10 to top boardRow 1
+    
 
 }
 
@@ -14,33 +16,34 @@ const elements = {
     message: document.getElementById('message'),
     resetBtn: document.getElementById('reset'),
     colorBox: document.getElementById('colorBox'),
-    checkBtn: document.createElement('button')
+    selectedCell: null
 }
-
 
 /*--------------------------------------------------------- event listeners --------------------------------------------------------*/
 
 
 //DOMContentLoaded: loading HTML first before script does.
-// document.addEventListener("DOMContentLoaded", function() {   
-// });
+ document.addEventListener("DOMContentLoaded", function() {  
+    mastermindBoard();
+ });
 
-elements.resetBtn.addEventListener('click', init);
-elements.checkBtn.addEventListener('click', checkButton);
+elements.resetBtn.addEventListener('click', resetGame);
+checkBtn.addEventListener('click', checkButton);
 
 
 /*--------------------------------------------------------- functions ---------------------------------------------------------*/
 
-init();
-
 function init() {
-
+    state.activeRow = 10;
+    state.winner = false;
+    hideSideCircles().forEach((div) => div.classList.add('cellDisplayNone'));
+    //showSideCircles().forEach((div) => div.classList.remove('cellDisplayNone'));
     render();
 }
 
+
+
 function render() {
-    mastermindBoard();
-    checkButton();
     pickMarble();
 }
 
@@ -101,19 +104,15 @@ function mastermindBoard () {
     }
 
     //creating a check button
+    
     checkBtn.classList.add('checkButton');
     checkBtn.appendChild(document.createTextNode('Check'));
-    const sideCellPosition = document.getElementById('sideCell10');
-    sideCellPosition.appendChild(checkBtn);
+    activeSideCellPosition().appendChild(checkBtn);
+
+    init();
+
 }
 
-function checkButton() {
-    if(stastate.activeRow > 1) {
-        state.activeRow--;
-    } else {
-        showResults();
-    }
-}
 
 
 
@@ -122,35 +121,173 @@ function messageRender() {
 }
 
 function resetGame() {
-
+    state.activeRow = 10;
+    hideSideCircles()
+    emptyColoredCircles();
+    activeSideCellPosition().appendChild(checkBtn);
+    allSideCellExceptBottom();
+    init();
 }
 
 function showRules() {
 
 }
 
+function allSideCellExceptBottom() {
+    for (let i = 1; i < 10; i++){
+        let sideCellDiv = document.querySelectorAll(`#sideCell${i} > div`);
+        if(sideCellDiv) {
+            sideCellDiv.forEach((div) => div.classList.remove('cellDisplayNone'));
+        }
+    }
+}
+
+
+function emptyColoredCircles() {
+    allMainCircleDivs().forEach(function(div){
+        div.style.backgroundColor = 'transparent';
+    });
+}
+
+function allMainCircleDivs() {
+    const MainCircleDivs = document.querySelectorAll('.mainCell > div');
+    return MainCircleDivs;
+}
+
+
+
+function hideSideCircles() {
+    const activeSideCircles = document.querySelectorAll(`#sideCell${state.activeRow} > div`);
+    return activeSideCircles;
+}
+
+function showSideCircles() {
+    const activeSideCircles = document.querySelectorAll(`#sideCell${state.activeRow + 1} > div`);
+    return activeSideCircles;
+}
+
+function activeCurrentCircles() {
+    const currentCircles = document.querySelectorAll(`#cell${state.activeRow} > div`);
+    return currentCircles;
+}
+
+function activeSideCellPosition() {
+    const sideCellPosition = document.getElementById(`sideCell${state.activeRow}`);
+    return sideCellPosition;
+}
+
+
+
 function pickMarble() {
     //Only active row circles can be hovered and clicked
     //const currentRow = document.getElementById(`cell${state.activeRow}`);
-    const currentCircles = document.querySelectorAll(`#cell${state.activeRow} > div`);
-    currentCircles.forEach((div) => div.classList.add('cellHover'));
+    disableCheckButton();
 
+    if(state.activeRow === 10) {
+        elements.message.innerText = '';
+        
+    }
 
-    
     for(let i = 0; i <= 5; i++){
         const colorBoxItem = document.querySelector(`#colorBox > div:nth-child(${i + 1})`);
         colorBoxItem.style.backgroundColor = MARBLE_COLORS[i];
+        colorBoxItem.style.position = 'relative';
     }
+    
 
 
+    activeCurrentCircles().forEach(function(cellValue) {
+
+        cellValue.classList.add('cellHover');
+
+        
+        cellValue.addEventListener('click', function() {
+
+            if(parseInt(cellValue.parentElement.id.replace('cell', '')) === state.activeRow) {
+                cellValue.appendChild(elements.colorBox);
+            
+                if(elements.colorBox.style.display === 'none' || elements.colorBox.style.display === ''){
+                    elements.colorBox.style.display =  'grid';
+                    elements.selectedCell = this;
+                } else {
+                    elements.colorBox.style.display =  'none';
+                }
+
+                
+            }
+        });
+
+        const colorBoxDiv = document.querySelectorAll('#colorBox > div');
+
+        colorBoxDiv.forEach(function(cellval, index){
+            cellval.addEventListener('click', function() {
+                elements.selectedCell.style.backgroundColor = `${MARBLE_COLORS[index]}`; // 0 - 5
+                checkIfAllActiveRowColored();
+            });
+        }); 
+
+        
+    });
+ 
 }
 
+/*----------------- CHECK BUTTON RELATED-----------------*/
+
+function checkIfAllActiveRowColored() {
+    const  activeMainRowDivs = activeCurrentCircles();
+    const allRowColored = [...activeMainRowDivs]. every((div) => MARBLE_COLORS.includes(div.style.backgroundColor));
+
+    if (allRowColored) {
+        enableCheckButton();
+    } else {
+        disableCheckButton();
+    }
+}
+
+
+function checkButton() {
+    elements.colorBox.style.display = 'none';
+
+    if(state.activeRow > 1) {
+        activeCurrentCircles().forEach((div) => {
+            div.classList.remove('cellHover');
+        });
+        state.activeRow--;
+
+        activeSideCellPosition().appendChild(checkBtn);
+        hideSideCircles().forEach((div) => div.classList.add('cellDisplayNone'));
+        showSideCircles().forEach((div) => div.classList.remove('cellDisplayNone'));
+        console.log(state.activeRow);
+    } else if(state.activeRow === 1) {
+        activeCurrentCircles().forEach((div) => div.classList.remove('cellHover'));
+        state.activeRow = -1;
+        disableCheckButton();
+        console.log(activeCurrentCircles());
+        console.log(state.activeRow);
+        showResults();
+    }
+    render();
+}
+
+function disableCheckButton() {
+    checkBtn.classList.add('disabledButton');
+}
+
+function enableCheckButton() {
+    checkBtn.classList.remove('disabledButton');
+}
+
+
 function showResults() {
-    if(winner) {
+    if(state.winner) {
         elements.message.innerText = 'You Win!';
         //TODO: show the correct marble code
     } else {
         elements.message.innerText = 'Try again :)';
         //TODO: show the correct marble code
     }
+    render();
 }
+
+
+init();
