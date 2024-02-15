@@ -70,6 +70,7 @@ function render() {
 
 function resetGame() {
     state.activeRow = 10;
+    elements.winCombo.style.display = 'none';
     state.winner = false;
     emptyColoredCircles();
     emptyGuessedColors();
@@ -347,8 +348,8 @@ function checkButton() {
 
         console.log(state.activeRow);
     } else if(state.activeRow === 1) { //last row
+        checkIfMatch()
         activeCurrentCircles().forEach((div) => div.classList.remove('cellHover'));
-        state.activeRow = -1;
         disableCheckButton();
         showResults();
     }
@@ -390,6 +391,9 @@ function checkIfMatch() {
 
     const guessedRow = elements.GUESSED_COLORS;
     const WinningRow = elements.WINNING_COLORS;
+
+    console.log(guessedRow);
+    console.log(WinningRow);
 
     //filling either black(exact spot) or gray(right colour but diff position)
     guessedRow.forEach((element, index) => {

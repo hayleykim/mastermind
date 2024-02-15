@@ -15,7 +15,8 @@ To play, click this link: [Mastermnind](https://hayleykim.github.io/mastermind)
 
 ## Images
 
-![Mastermind image](img/Mastermind%20img.png)
+![Mastermind win image](img/Mastermind%20img.png)
+![Mastermind lose image](img/lose.png)
 
 ## Languages used
 
