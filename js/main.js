@@ -243,7 +243,6 @@ function generateWinningCombo() {
 
 function showRules() {
     elements.ruleDiv.classList.toggle('showRule');
-    console.log('show rules');
 }
 
 function allSideCellExceptBottom() {
@@ -345,8 +344,6 @@ function checkButton() {
         activeSideCellPosition().appendChild(checkBtn);
         activeSideCircles().forEach((div) => div.classList.add('cellDisplayNone'));
         showSideCircles().forEach((div) => div.classList.remove('cellDisplayNone'));
-
-        console.log(state.activeRow);
     } else if(state.activeRow === 1) { //last row
         checkIfMatch()
         activeCurrentCircles().forEach((div) => div.classList.remove('cellHover'));
@@ -372,7 +369,6 @@ function fillSideColors() {
 
     if(JSON.stringify(WIN_MATCH_COLOR) === JSON.stringify(elements.SIDE_COLORS)) { //comparing if these 2 objects match.
         //winner will be 'true' once WIN_MATCH_COLOR and SIDE_COLORS both have 4 blacks
-        console.log("you win");
         state.winner = true;
         showResults();
     }
@@ -391,9 +387,6 @@ function checkIfMatch() {
 
     const guessedRow = elements.GUESSED_COLORS;
     const WinningRow = elements.WINNING_COLORS;
-
-    console.log(guessedRow);
-    console.log(WinningRow);
 
     //filling either black(exact spot) or gray(right colour but diff position)
     guessedRow.forEach((element, index) => {

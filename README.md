@@ -15,8 +15,12 @@ To play, click this link: [Mastermnind](https://hayleykim.github.io/mastermind)
 
 ## Images
 
-![Mastermind win image](img/Mastermind%20img.png)
-![Mastermind lose image](img/lose.png)
+
+<p align="center" width="100%">
+    <img src="img/win.png" width="400px" alt="Mastermind win image"/>
+    <img src="img/lose.png" width="400px" alt="Mastermind lose image"/>
+</p>
+
 
 ## Languages used
 
