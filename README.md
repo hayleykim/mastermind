@@ -10,15 +10,15 @@ For more information on how to play the game, simply click on "How to Play" butt
 
 ## Play Game
 
-To play, click this link: [Mastermnind](https://hayleykim.github.io/mastermind)
+To play the game, click this link: [Mastermind](https://hayleykim.github.io/mastermind)
 
 
 ## Images
 
 
 <p align="center" width="100%">
-    <img src="img/win.png" width="400px" alt="Mastermind win image"/>
-    <img src="img/lose.png" width="400px" alt="Mastermind lose image"/>
+    <img src="img/win.png" height="400" width="400px" alt="Mastermind win image"/>
+    <img src="img/lose.png" height="400" width="400px" alt="Mastermind lose image"/>
 </p>
 
 
@@ -30,7 +30,9 @@ To play, click this link: [Mastermnind](https://hayleykim.github.io/mastermind)
 
 ## UX / UI
 
-I tried to make it minimalistic and very straightforward :D 
+I tried to make it minimalistic and very straightforward in order for users to purely focus on the game :D 
+
+To achieve a softer look, I've used pastel colours instead of stronger/ darker colours.
 
 ## Next Steps
 
