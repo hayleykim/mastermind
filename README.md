@@ -1,59 +1,27 @@
-# Markdown Intro this is h1
+# Mastermind by Hayley
 
-this is h1
-=================
+To win this Mastermind game, you will have to guess a combination of four pegs in 10 turns.
 
-## Subheading
-### sub sub heading
+Start from the bottom row, click on each peg to select a color from the pop-up color box!
 
-
-subheading
-------------------
-
-
-paragraph 1
-
-this is paragraph 2
-
-new lines are respected
-
-_italics_ __bold__
-
-*this* and **this**
-
-___this___ and ***this***
-
-## Lists
-
-* one
-* two
-- three
-- four
-1. five
-2. six
-3. seven
-
-## Links
-
-Here is a link to the [url](www.google.com)
-
-Click [here]() to play the game
+For more information on how to play the game, simply click on "How to Play" button next to the "Reset" button.
 
 ## Images
 
-![a basket of kittens](https://placekitten.com/200/100)
+![Mastermind image](img/Mastermind%20img.png)
 
-## Code
-here is what I wrote in JS: `document.getElementById` how cool is it?
+## Languages used
 
-I can also do `console.log()`. Can you?
+* HTML
+* CSS
+* JavaScript (a little bit of JSON)
 
-longer bits of code, use triple backticks:
+## UX/UI
 
-```javascript
-const hello = function () {
-    console.log('Hi);
-};
-```
+I tried to make it minimalistic and very straightforward :D 
 
-daring fireball made markdown.
+
+## Links
+
+To play, click this link: [Mastermnind](https://www.hayleykim/github.io/mastermind)
+

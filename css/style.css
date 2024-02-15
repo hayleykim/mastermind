@@ -1,49 +1,61 @@
 body {
     background-color: #f9f8fd;
+    height: 100vmin;
 }
 
 .container {
-    height: 80vmin;
+    
     margin: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* border: 1px solid gray; */
 }
 
 
 
-header {
-    color: #5cbdb9;
+header, .rulesTitle {
+    color: #967E76;
     font-size: 5vmin;
     padding: 1vmin;
 }
 
 #message {
     font-size: 4vmin;
-    color: #8cbcd0;
+    color: #B7C4CF;
     padding: 1vmin;
+}
+
+#winCombo {
+    display: none;
+    justify-content: justify-between;
+    align-items: center;
+    margin: 1vmin;
+}
+
+#winCombo > div {
+    height: 3vmin;
+    width: 3vmin;
+    margin: 1vmin;
+    border: 2px solid gray;
+    border-radius: 50%;
 }
 
 #board {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(10, 1fr);
-    /* border: 1px solid limegreen; */
 }
 
 .boardRow {
     display: flex;
     justify-content: space-between;
-    /* border: 1px solid blue; */
     margin: 0.5vmin 0;
 }
 
 .mainCell {
     display: flex;
     justify-content: justify-between;
-    /* border: 1px solid red; */
     margin-right: 1vmin;
 }
 
@@ -56,21 +68,11 @@ header {
     border-radius: 50%;
 }
 
-.colorFilled {
-
-}
-
-/* .mainCell > div:hover {
-    background-color: gray;
-    opacity: 0.2;
-} */
-
 
 .sideCell {
     display: flex;
     justify-content: justify-between;
     align-items: center;
-    /* border: 1px solid blue; */
 }
 
 .sideCell > div {
@@ -92,7 +94,7 @@ header {
 }
 
 .cellHover:hover{
-    background-color:gray;
+    background-color:#EEE3CB;
 }
 
 #colorBox {
@@ -140,13 +142,14 @@ header {
 }
 
 #buttonContainer > button:hover {
-    background-color: #8cbcd0;
+    background-color: #D7C0AE;
     color: white;
 }
 
 
 
 /* Check button */
+
 
 .checkButton {
     border-radius: 12px;
@@ -158,7 +161,7 @@ header {
 }
 
 .checkButton:hover {
-    background-color: #8cbcd0;
+    background-color: #D7C0AE;
     color: white;
 }
 
@@ -166,3 +169,31 @@ header {
     pointer-events: none;
     opacity: 0.2;
   }
+
+#ruleDiv.showRule {
+    display: flex;
+}
+
+
+#ruleDiv {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: gray;
+    margin: 2vmin;
+    border-top: 2px #B7C4CF dotted;
+    border-bottom: 2px #B7C4CF dotted;
+}
+
+.rulesTitle {
+    margin-top: 1.5vmin;
+}
+
+.rulesContent {
+    padding: 2vmin;
+    list-style-type: square;
+    line-height: 3vmin;
+    font-size: 2vmin;
+    margin-top: 0;
+}

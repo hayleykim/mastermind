@@ -17,6 +17,12 @@
     <div class="container">
         <header>Mastermind</header>
         <div id="message"></div>
+        <div id="winCombo">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
 
         <div id="board">
             <!-- mastermindBoard goes here -->
@@ -25,6 +31,21 @@
         <div id="buttonContainer">
             <button id="reset">Reset</button>
             <button id="rules">How to Play</button>
+        </div>
+
+        <div id="ruleDiv">
+            <div class="rulesTitle">Rules</div>
+            <ul class="rulesContent">
+                <li>For each game, a combination of four pegs will be generated (NO duplicated colors).</li>
+                <li>You have to guess the color combination by clikcing the peg from the bottom row.</li>
+                <li>Choose any color from the pop-up colors (Red, Orange, Yellow, Green, Blue, Purple), fill up all the 4 pegs & press "Check".</li>
+                <li>For each turn, feedback will be given on the right hand side.</li>
+                <li><span style="font-weight: bold;">Black peg</span>: one of the guessed pegs is correct & is in the right hole. </li>
+                <li><span style="font-weight: bold; color: gray;">Gray peg</span>: one of the guessed pegs is correct, but is in the wrong hole.</li>
+                <li>Uncolored peg: that color doesn't exist in the color combination. The order of the black & gray pegs does not matter.</li>
+                <li>Keep gussing until you get 4 black pegs on the right hand side. The game ends if you guess the color combination right within 10 turns.</li>
+            </ul>
+
         </div>
         
     </div>

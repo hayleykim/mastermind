@@ -1,7 +1,16 @@
 /*--------------------------------------------------------- constants ---------------------------------------------------------*/
-const MARBLE_COLORS = ['red', 'orange', 'yellow', 'green', 'blue', 'purple'];
-const MATCH_COLOR = ['black', 'gray'];
-const WIN_MATCH_COLOR = ['black', 'black', 'black', 'black'];
+const rainbow = {  
+    red: 'rgb(255, 173, 173)', 
+    orange: 'rgb(255, 214, 165)',
+    yellow: 'rgb(253, 255, 182)',
+    green: 'rgb(202, 255, 191)',
+    blue: 'rgb(155, 246, 255)',
+    pruple: 'rgb(189, 178, 255)'
+};
+
+const MARBLE_COLORS = [rainbow.red, rainbow.orange, rainbow.yellow, rainbow.green, rainbow.blue, rainbow.pruple]; //What colorbox shows. WINNING_COLORS will be made out of this
+const MATCH_COLOR = ['black', 'gray']; //black for correct position + color, gray for wrong position + right color
+const WIN_MATCH_COLOR = ['black', 'black', 'black', 'black']; //If 4 of them are all showing 'black' player wins
 const checkBtn = document.createElement('button');
 
 
@@ -18,7 +27,10 @@ const state = {
 const elements = {
     message: document.getElementById('message'),
     resetBtn: document.getElementById('reset'),
+    rulesBtn: document.getElementById('rules'),
     colorBox: document.getElementById('colorBox'),
+    ruleDiv: document.getElementById('ruleDiv'),
+    winCombo: document.getElementById('winCombo'),
     selectedCell: null,
     WINNING_COLORS: [],
     GUESSED_COLORS: [],
@@ -35,11 +47,12 @@ const elements = {
 
 elements.resetBtn.addEventListener('click', resetGame);
 checkBtn.addEventListener('click', checkButton);
-
+elements.rulesBtn.addEventListener('click', showRules);
 
 /*--------------------------------------------------------- functions ---------------------------------------------------------*/
 
 function init() {
+    //Making sure it starts from the bottom row
     state.activeRow = 10;
     state.winner = false;
     activeSideCircles().forEach((div) => div.classList.add('cellDisplayNone'));
@@ -50,6 +63,8 @@ function init() {
 
 function render() {
     pickMarble();
+    console.log(elements.WINNING_COLORS);
+    console.log(rainbow);
     
 }
 
@@ -72,25 +87,30 @@ function resetGame() {
 
 
 function mastermindBoard () {
+
+    //New winning combo gets generated for each game
     generateWinningCombo();
+    
+
+    /*
     //To create the board that is repetative in HTML using JS
-//structure:
-/*
-<div class="boardRow" id="boardRow1">
-    <div class="mainCell" id="cell1">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+    //structure will be:
+
+    <div class="boardRow" id="boardRow1">
+        <div class="mainCell" id="cell1">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="sideCell" id="sideCell1">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
-    <div class="sideCell" id="sideCell1">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-</div>
-*/
+    */
     const board = document.getElementById('board');
 
     for (let i = 1; i < 11; i++) {
@@ -128,7 +148,6 @@ function mastermindBoard () {
     }
 
     //creating a check button
-    
     checkBtn.classList.add('checkButton');
     checkBtn.appendChild(document.createTextNode('Check'));
     activeSideCellPosition().appendChild(checkBtn);
@@ -138,9 +157,10 @@ function mastermindBoard () {
 
 
 function pickMarble() {
-    console.log(elements.WINNING_COLORS);
+    
     disableCheckButton();
 
+    //colobox's 6 pegs
     for(let i = 0; i <= 5; i++){
         const colorBoxItem = document.querySelector(`#colorBox > div:nth-child(${i + 1})`);
         colorBoxItem.style.backgroundColor = MARBLE_COLORS[i];
@@ -155,81 +175,74 @@ function pickMarble() {
 
 
 function colorBoxShow(cellValue) {
-    cellValue.classList.add('cellHover');
+    cellValue.classList.add('cellHover'); //allowing each active cell to have :hover in CSS
 
     let colorBoxVisible = false;
 
     cellValue.addEventListener('click', function () {
 
+        //getting the index value of thc cell${id number} to see if it is the active(current) row
         if (parseInt(cellValue.parentElement.id.replace('cell', '')) === state.activeRow) {
-            cellValue.appendChild(elements.colorBox);
+            cellValue.appendChild(elements.colorBox); //the current circle now has colobox appended
 
-            colorBoxVisible = !colorBoxVisible;
-            elements.colorBox.style.display = colorBoxVisible ? 'grid' : 'none';
-            elements.selectedCell = this;
-            // console.log(elements.colorBox.style.display); //grid or none
+            colorBoxVisible = !colorBoxVisible; //making sure colorBox is not visible (false)
+            elements.colorBox.style.display = colorBoxVisible ? 'grid' : 'none'; //if colorbox is NOT visible, show color box, otherwise hide it
+            elements.selectedCell = this; //to get the selected circle
         }
     });
 
     const colorBoxDiv = document.querySelectorAll('#colorBox > div');
 
+    //for color box
     colorBoxDiv.forEach(function (cellval, index) {
         cellval.addEventListener('click', function () {
-            elements.selectedCell.style.backgroundColor = `${MARBLE_COLORS[index]}`;
+            elements.selectedCell.style.backgroundColor = `${MARBLE_COLORS[index]}`; //filling the selected circle's background color to selected color from the colorbox which is in MARBLE_COLORS
             checkIfAllActiveRowColored();
-            isColorBoxVisible = false;
             elements.colorBox.style.display = 'none';
-            // console.log(elements.colorBox.style.display); //none
             
         });
     });
 }
 
 
-
 function generateWinningCombo() {
-    //copy of MARBLE_COLORS
-    let marbleColorsCopy = [...MARBLE_COLORS];
-    let CopyArrIdx = marbleColorsCopy.length;
+    let marbleColorsCopy = [...MARBLE_COLORS]; //copy of MARBLE_COLORS
+    let CopyArrIdx = marbleColorsCopy.length; //which is 6
     let randomIdx = 0;
     
     while (CopyArrIdx > 0) {
-        //Getting the remaining ekement
-        randomIdx = Math.floor(Math.random() * CopyArrIdx);
+        //until it reaches to 1 from 6
+        randomIdx = Math.floor(Math.random() * CopyArrIdx); //for example if CopyArrIdx is 6, randomIdx will be a number between 0 - 5 as Math.random() give number between 0 - 0.99999..(less than 1)
         CopyArrIdx--;
 
-        //Swap with CopyArrIdx
+        //changing the values so that it "shuffles" the array - assigning two variables at once
+        /*
+            const arr = [1,2,3];
+            [arr[2], arr[1]] = [arr[1], arr[2]];    
+            // 3 becomces 2 and 2 becomes 3 so arr is now [1, 3, 2]
+
+        */
         [marbleColorsCopy[CopyArrIdx], marbleColorsCopy[randomIdx]] = [marbleColorsCopy[randomIdx], marbleColorsCopy[CopyArrIdx]];
     }
 
     //Getting the first 4 keys from marbleColorsCopy
     let maxCount = 4;
     let count = 0;
-    
+
     for (let item in marbleColorsCopy) {
-        elements.WINNING_COLORS[item] = marbleColorsCopy[item];
+        elements.WINNING_COLORS[item] = marbleColorsCopy[item]; //filling in WINNING_COLORS with marbleColorsCopy values 4 times only as winning combo can only be 4 pegs
         count++;
 
         if(count >= maxCount) {
             break;
         }
     }
-    // console.log(marbleColorsCopy);
-    // console.log(elements.WINNING_COLORS);
-    // console.log(elements.WINNING_COLORS);
 }
 
-
-
-
-
-
-function messageRender() {
-
-}
 
 function showRules() {
-
+    elements.ruleDiv.classList.toggle('showRule');
+    console.log('show rules');
 }
 
 function allSideCellExceptBottom() {
@@ -256,8 +269,18 @@ function emptyColoredCircles() {
 function colorBox() {
     const colorBox = document.getElementById('colorBox');
     return colorBox;
-
 }
+
+function showWinCombo() {
+    const winCombo = document.querySelectorAll(`#winCombo > div`);
+
+    winCombo.forEach(function(div, index){
+        div.style.backgroundColor = `${elements.WINNING_COLORS[index]}`;
+    });
+
+    elements.winCombo.style.display = 'flex';
+}
+
 
 function allMainCircleDivs() {
     const MainCircleDivs = document.querySelectorAll('.mainCell > div');
@@ -297,9 +320,10 @@ function activeSideCellPosition() {
 
 function checkIfAllActiveRowColored() {
     const  activeMainRowDivs = activeCurrentCircles();
-    const allRowColored = [...activeMainRowDivs].every((div) => MARBLE_COLORS.includes(div.style.backgroundColor));
+    const allRowColored = [...activeMainRowDivs].every((div) => MARBLE_COLORS.includes(div.style.backgroundColor)); //check if every active row includes the background color that exists in MARBLE_COLORS
 
     if (allRowColored) {
+        //enables check button only if all rows are colored in
         enableCheckButton();
 
     } else {
@@ -322,11 +346,10 @@ function checkButton() {
         showSideCircles().forEach((div) => div.classList.remove('cellDisplayNone'));
 
         console.log(state.activeRow);
-    } else if(state.activeRow === 1) {
+    } else if(state.activeRow === 1) { //last row
         activeCurrentCircles().forEach((div) => div.classList.remove('cellHover'));
         state.activeRow = -1;
         disableCheckButton();
-        console.log(activeCurrentCircles());
         showResults();
     }
     render();
@@ -345,32 +368,13 @@ function fillSideColors() {
         div.style.backgroundColor = `${elements.SIDE_COLORS[index]}`;
     });
 
-    // if(Object.values(WIN_MATCH_COLOR) == Object.values(elements.SIDE_COLORS)) {
-    //     console.log("you win");
-    //     state.winner = true;
-    //     showResults();
-    // }
 
-
-    // const sideRow = activeSideCircles();
-    // const allWinningColors = [...sideRow].every((div) => WIN_MATCH_COLOR.includes(div.style.backgroundColor ===  `${MATCH_COLOR[0]}`));
-    // console.log(allWinningColors);
-    
-    // if(allWinningColors) {
-    //     console.log("you win");
-    //     state.winner = true;
-    //     showResults();
-    // }
-
-    if(JSON.stringify(WIN_MATCH_COLOR) === JSON.stringify(elements.SIDE_COLORS)) {
+    if(JSON.stringify(WIN_MATCH_COLOR) === JSON.stringify(elements.SIDE_COLORS)) { //comparing if these 2 objects match.
+        //winner will be 'true' once WIN_MATCH_COLOR and SIDE_COLORS both have 4 blacks
         console.log("you win");
         state.winner = true;
         showResults();
     }
-
-
-
-    console.log(state.winner);
 
 }
 
@@ -387,27 +391,18 @@ function checkIfMatch() {
     const guessedRow = elements.GUESSED_COLORS;
     const WinningRow = elements.WINNING_COLORS;
 
-    console.log(guessedRow);
-    console.log(WinningRow);
+    //filling either black(exact spot) or gray(right colour but diff position)
+    guessedRow.forEach((element, index) => {
+        if(element === WinningRow[index]) {
+            elements.SIDE_COLORS.push(MATCH_COLOR[0]);
+        } else if(WinningRow.includes(element)) {
+            elements.SIDE_COLORS.push(MATCH_COLOR[1]);
+        }
+    });
 
+    elements.SIDE_COLORS.sort(); //black pegs come first and gray pegs next
 
-
-        guessedRow.forEach((element, index) => {
-            if(element === WinningRow[index]) {
-                elements.SIDE_COLORS.push(MATCH_COLOR[0]);
-                console.log(elements.SIDE_COLORS);
-            } else if(WinningRow.includes(element)) {
-                elements.SIDE_COLORS.push(MATCH_COLOR[1]);
-                console.log(elements.SIDE_COLORS);
-            }
-            console.log(element);
-            console.log(WinningRow[index]);
-        });
-
-        elements.SIDE_COLORS.sort();
-        console.log(elements.SIDE_COLORS);
-
-        fillSideColors();
+    fillSideColors();
 }
 
 function disableCheckButton() {
@@ -421,12 +416,12 @@ function enableCheckButton() {
 
 function showResults() {
     if(state.winner) {
-        elements.message.innerText = 'You Win!';
-        //TODO: show the correct marble code
+        elements.message.innerText = 'You guessed it right! Congratulations :D';
     } else {
         elements.message.innerText = 'Try again :)';
-        //TODO: show the correct marble code
     }
+    //show the correct marble code
+    showWinCombo();
     render();
 }
 
