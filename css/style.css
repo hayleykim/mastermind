@@ -12,8 +12,6 @@ body {
     align-items: center;
 }
 
-
-
 header, .rulesTitle {
     color: #967E76;
     font-size: 5vmin;
@@ -102,7 +100,6 @@ header, .rulesTitle {
     position: absolute;
     left: -3.5vmin;
     bottom: -7.5vmin;
-    /* width: 100%; */
     justify-items: center;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
@@ -121,9 +118,6 @@ header, .rulesTitle {
     border-radius: 50%;
 }
 
-/* #colorBox > div:nth-child(1){
-    background-color: red;
-} */
 
 /* Footer buttons */
 
@@ -174,6 +168,7 @@ header, .rulesTitle {
     display: flex;
 }
 
+/* Rules */
 
 #ruleDiv {
     display: none;
